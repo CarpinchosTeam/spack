@@ -24,12 +24,15 @@ class Hpl(AutotoolsPackage):
     version("2.2", sha256="ac7534163a09e21a5fa763e4e16dfc119bc84043f6e6a807aba666518f8df440")
 
     variant("openmp", default=False, description="Enable OpenMP support")
+    variant("progress", default=False, description="Enable progress report support")
 
     depends_on("mpi@1.1:")
     depends_on("blas")
 
     # 2.3 adds support for openmpi 4
     conflicts("^openmpi@4.0.0:", when="@:2.2")
+
+    patch("progress_report.patch", when="@:2.3 +progress")
 
     parallel = False
 
@@ -103,10 +106,13 @@ class Hpl(AutotoolsPackage):
     def configure_args(self):
         filter_file(r"^libs10=.*", "libs10=%s" % self.spec["blas"].libs.ld_flags, "configure")
 
+        cflags = "CFLAGS=-O3 "
         if "+openmp" in self.spec:
-            config = ["CFLAGS=-O3 " + self.compiler.openmp_flag]
-        else:
-            config = ["CFLAGS=-O3"]
+            cflags += self.compiler.openmp_flag
+        if "+progress" in self.spec:
+            cflags += " -DHPL_PROGRESS_REPORT -DHPL_USE_GETTIMEOFDAY "
+
+        config = [cflags]
 
         if (
             self.spec.satisfies("^intel-mkl")

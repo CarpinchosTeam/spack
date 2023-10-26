@@ -1,0 +1,66 @@
+diff --git a/src/pgesv/HPL_pdgesv0.c b/src/pgesv/HPL_pdgesv0.c
+index d79b6fa..46a61c4 100644
+--- a/src/pgesv/HPL_pdgesv0.c
++++ b/src/pgesv/HPL_pdgesv0.c
+@@ -107,7 +107,7 @@ void HPL_pdgesv0
+    if( ( N = A->n ) <= 0 ) return;
+ 
+ #ifdef HPL_PROGRESS_REPORT
+-   start_time = HPL_timer_walltime();
++   start_time = HPL_ptimer_walltime();
+ #endif
+  
+    HPL_pdupdate = ALGO->upfun; nb = A->nb;
+@@ -130,7 +130,7 @@ void HPL_pdgesv0
+       /* if this is process 0,0 and not the first panel */
+       if ( GRID->myrow == 0 && GRID->mycol == 0 && j > 0 ) 
+       {
+-          time = HPL_timer_walltime() - start_time;
++          time = HPL_ptimer_walltime() - start_time;
+           gflops = 2.0*(N*(double)N*N - n*(double)n*n)/3.0/(time > 0.0 ? time : 1e-6)/1e9;
+           HPL_fprintf( stdout, "Column=%09d Fraction=%4.1f%% Gflops=%9.3e\n", j, j*100.0/N, gflops);
+       }
+diff --git a/src/pgesv/HPL_pdgesvK1.c b/src/pgesv/HPL_pdgesvK1.c
+index ff1958c..be6a1ec 100644
+--- a/src/pgesv/HPL_pdgesvK1.c
++++ b/src/pgesv/HPL_pdgesvK1.c
+@@ -112,7 +112,7 @@ void HPL_pdgesvK1
+    if( N <= 0 ) return;
+ 
+ #ifdef HPL_PROGRESS_REPORT
+-   start_time = HPL_timer_walltime();
++   start_time = HPL_ptimer_walltime();
+ #endif
+ 
+ /*
+@@ -170,7 +170,7 @@ void HPL_pdgesvK1
+       /* if this is process 0,0 and not the first panel */
+       if ( GRID->myrow == 0 && mycol == 0 && j > 0 ) 
+       {
+-          time = HPL_timer_walltime() - start_time;
++          time = HPL_ptimer_walltime() - start_time;
+           gflops = 2.0*(N*(double)N*N - n*(double)n*n)/3.0/(time > 0.0 ? time : 1e-6)/1e9;
+           HPL_fprintf( stdout, "Column=%09d Fraction=%4.1f%% Gflops=%9.3e\n", j, j*100.0/N, gflops);
+       }
+diff --git a/src/pgesv/HPL_pdgesvK2.c b/src/pgesv/HPL_pdgesvK2.c
+index dec506a..ed79b64 100644
+--- a/src/pgesv/HPL_pdgesvK2.c
++++ b/src/pgesv/HPL_pdgesvK2.c
+@@ -112,7 +112,7 @@ void HPL_pdgesvK2
+    if( N <= 0 ) return;
+ 
+ #ifdef HPL_PROGRESS_REPORT
+-   start_time = HPL_timer_walltime();
++   start_time = HPL_ptimer_walltime();
+ #endif
+ 
+ /*
+@@ -176,7 +176,7 @@ void HPL_pdgesvK2
+       /* if this is process 0,0 and not the first panel */
+       if ( GRID->myrow == 0 && mycol == 0 && j > 0 ) 
+       {
+-          time = HPL_timer_walltime() - start_time;
++          time = HPL_ptimer_walltime() - start_time;
+           gflops = 2.0*(N*(double)N*N - n*(double)n*n)/3.0/(time > 0.0 ? time : 1e-6)/1e9;
+           HPL_fprintf( stdout, "Column=%09d Fraction=%4.1f%% Gflops=%9.3e\n", j, j*100.0/N, gflops);
+       }
